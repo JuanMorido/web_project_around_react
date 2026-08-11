@@ -4,6 +4,7 @@ import Popup from './Popup/Popup';
 import NewCard from './Popup/NewCard/NewCard';
 import EditProfile from './Popup/EditProfile/EditProfile';
 import EditAvatar from './Popup/EditAvatar/EditAvatar';
+import ImagePopup from './Popup/ImagePopup/ImagePopup';
 import Card from './Card/Card';
 import avatar from '../../images/avatar.jpg';
 
@@ -44,14 +45,7 @@ export default function Main(): React.JSX.Element {
   }
 
   function handleCardImageClick(card: CardData): void {
-    const imagePopup: PopupConfig = {
-      children: (
-        <>
-          <img className='popup__image' src={card.link} alt={card.name} />
-          <p className='popup__caption'>{card.name}</p>
-        </>
-      ),
-    };
+    const imagePopup: PopupConfig = { children: <ImagePopup card={card} /> };
     handleOpenPopup(imagePopup);
   }
 

@@ -3,16 +3,23 @@ type PopupProps = {
   children: React.ReactNode;
   onClose: () => void;
   isOpen: boolean;
+  isConfirm?: boolean;
 };
 
 export default function Popup(props: PopupProps): React.JSX.Element {
-  const { title, children, onClose, isOpen } = props;
+  const { title, children, onClose, isOpen, isConfirm } = props;
+
+  const contentClassName = [
+    'popup__content',
+    !title ? 'popup__content_content_image' : '',
+    isConfirm ? 'popup__content_type_confirm' : '',
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   return (
     <div className={`popup ${isOpen ? 'popup_is-opened' : ''}`}>
-      <div
-        className={`popup__content ${!title ? 'popup__content_content_image' : ''}`}
-      >
+      <div className={contentClassName}>
         <button
           aria-label='Close modal'
           className='popup__close'

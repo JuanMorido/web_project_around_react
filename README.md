@@ -1,39 +1,39 @@
 # Around The U.S. — React
 
-Galería interactiva de tarjetas de lugares, migrada de Programación Orientada a Objetos con TypeScript a **React**. En esta etapa la interfaz está componentizada y las ventanas emergentes se controlan con estado, no manipulando el DOM.
+Galería interactiva de tarjetas de lugares, migrada a **React**. El perfil y las tarjetas llegan de la API de TripleTen. Las acciones (like, borrar, editar, crear) actualizan el estado de la aplicación.
 
 ## Funcionalidad
 
-- Renderiza el perfil del usuario y la galería de tarjetas a partir de un array de datos
-- Abre y cierra tres ventanas emergentes: editar perfil, nuevo lugar y cambiar foto de perfil
-- Abre la imagen de una tarjeta a tamaño completo, con su leyenda y sin título
-- Todas las ventanas se cierran con el botón X
+- Carga el usuario y las tarjetas con `Promise.all` al montar `App`
+- Comparte `currentUser` y los handlers de perfil, avatar, nueva tarjeta y borrado con Context
+- `Main` y `Card` se suscriben a `CurrentUserContext`
+- Like de tarjetas y borrado solo de las propias (con confirmación `RemoveCard`)
+- Formulario de perfil controlado (`useState`)
+- Formulario de avatar no controlado (`useRef`)
+- Nueva tarjeta controlada; la tarjeta creada aparece al inicio de la lista
+- Ventana de imagen a tamaño completo
 
 ## Arquitectura
 
-Cada componente vive en su propia carpeta dentro de `src/components`:
-
-- `App` — estructura general de la página.
-- `Header` / `Footer` — cabecera con el logo y pie de página.
-- `Main` — perfil, galería y **el estado de las ventanas emergentes**.
-- `Main/Card` — una tarjeta individual; recibe sus datos y su manejador por props.
-- `Main/Popup` — contenedor genérico de ventana emergente (título opcional, contenido por `children`).
-- `Main/Popup/NewCard`, `EditProfile`, `EditAvatar`, `ImagePopup` — el contenido de cada ventana.
-- `src/types/types.ts` — interfaces `PopupConfig` y `CardData`.
-
-El estado (`useState`) vive únicamente en `Main`: los componentes hijos no lo manejan, solo reciben props.
+- `src/utils/api.ts` — instancia de `Api` con token y URL base
+- `src/contexts/CurrentUserContext.tsx` — contexto del usuario actual
+- `src/interfaces/` — `UserData`, `CardData`, `CurrentUserContextType`, `ModalData`
+- `App` — cerebro: estado de usuario, tarjetas y popups; llamadas a la API
+- `Main` — perfil dinámico y galería
+- `Main/components/card` — like por props; borrar solo si la tarjeta es propia
+- `Main/components/popup` — `Popup`, `EditProfile`, `EditAvatar`, `NewCard`, `ImagePopup`, `RemoveCard`
 
 ## Tecnologías
 
-- React 19 (componentes funcionales y hooks)
-- TypeScript (tipado estricto de props y datos)
-- Vite (servidor de desarrollo y empaquetado)
+- React 19 (componentes funcionales, hooks, Context)
+- TypeScript
+- Vite
 - CSS3 con metodología BEM
 
 ## Cómo ejecutar
 
 ```bash
 npm install
-npm run dev      # servidor de desarrollo en el puerto 3000
-npm run build    # compila a dist/
+npm run dev
+npm run build
 ```
